@@ -12,12 +12,20 @@ app.controller('AppCtrl',function($scope, $timeout){
 
 //Section 6 lecture 30 3:00
   var startTime = Date.now();
-  var promise = add(5,2);
-
-  promise.then(function(result) {
-    $scope.result = result;
-    $scope.elapsedTime = Date.now() - startTime;
-  });
+  add(5,2)
+    .then(function(result) {
+      return add(result, 3);
+    })
+    .then(function(result) {
+      return add(result, 1);
+    })
+    .then(function(result) {
+      return Array(result).join("*");
+    })
+    .then(function(result) {
+      $scope.result = result;
+      $scope.elapsedTime = Date.now() - startTime;
+    });
 
   // add(5,2, function(result){
   //   add(result, 3, function(result){
