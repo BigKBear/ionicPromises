@@ -2,12 +2,19 @@
 
 var app = angular.module('app', ['ionic']);
 
-app.controller('AppCtrl',function($scope, $timeout){
+app.controller('AppCtrl',function($q, $scope){
 
   function add(x,y) {
-    return $timeout(function() {
-      return x + y;
+    var q = $q.defer();
+    setTimeout(function(){
+      var result = x + y;
+      if (result >=  0){
+        q.resolve(x + y);
+      }else{
+        q.reject ('negative value: ' + result);
+      }
     },100);
+    return q.promise;
   }
 
 //Section 6 lecture 30 3:00
@@ -25,6 +32,9 @@ app.controller('AppCtrl',function($scope, $timeout){
     .then(function(result) {
       $scope.result = result;
       $scope.elapsedTime = Date.now() - startTime;
+    })
+    .catch(function(failure){
+       $scope.failure = failure;
     });
 
   // add(5,2, function(result){
